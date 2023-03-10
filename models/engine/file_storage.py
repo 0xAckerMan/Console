@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 ''' File storage class'''
 import json
+import models
 
 class FileStorage:
     '''
@@ -27,10 +28,21 @@ class FileStorage:
         FileStorage.__objects[key] = obj
     
     def save(self):
-        '''saves to json'''
-        with open(FileStorage.__file_path, mode='w', encoding='UTF-8') as f:
-            my_obj ={}
-            for k, v in FileStorage.__objects.items():
-                my_obj[k] = v.to_dict()
-            my_str = json.dumps(my_obj)
-            f.write(my_str)
+        with open(self.__file_path, "w", encoding="utf-8") as file:
+            dict = {k: v.to_dict() for k, v in self.__objects.items()}
+            json.dump(dict, file)
+    
+
+    def reload(self):
+        """
+        deserializes the JSON file to __objects
+        """
+        try:
+            with open(FileStorage.__file_path, mode='r') as f:
+                r = json.load(f)
+                for k, v in r.items():
+                    cls_name = k.split('.')[0]
+                    my_obj = eval(cls_name)(**v)
+                    self.new(my_obj)
+        except:
+            pass
