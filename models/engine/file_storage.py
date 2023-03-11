@@ -16,7 +16,7 @@ class FileStorage:
     
     def all(self):
         '''returns all objects'''
-        return self.__objects
+        return FileStorage.__objects
     
     def new(self, obj):
         '''
@@ -28,9 +28,15 @@ class FileStorage:
         FileStorage.__objects[key] = obj
     
     def save(self):
-        with open(self.__file_path, "w", encoding="utf-8") as file:
-            dict = {k: v.to_dict() for k, v in self.__objects.items()}
-            json.dump(dict, file)
+        """
+        serializes _objects to the JSON file
+        """
+        with open(FileStorage.__file_path, mode='w', encoding='UTF-8') as f:
+            my_obj = {}
+            for k, v in FileStorage.__objects.items():
+                my_obj[k] = v.to_dict()
+            my_str = json.dumps(my_obj)
+            f.write(my_str)
     
 
     def reload(self):
