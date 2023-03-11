@@ -1,46 +1,38 @@
 #!/usr/bin/python3
-"""
-serializes/deserializes JSON
-"""
+''' File storage class'''
 import json
-from models.base_model import BaseModel
+import models
 from models.user import User
 
+class FileStorage:
+    '''
+    Class implementation that serializes instance to json
+    and deserializes JSON to instances
+    '''
+    
 
-class FileStorage():
-    """
-    Serializes instances to a JSON file and deserializes JSON file to instances
-    Attributes:
-    __file_path: Path to JSON file
-    __objects: Dictionary storing all objects
-    """
-    __file_path = "file.json"
+    __file_path = 'file.json'
     __objects = {}
 
+    
     def all(self):
-        """
-        Returns the dictionary __objects
-        """
+        '''returns all objects'''
         return FileStorage.__objects
-
+    
     def new(self, obj):
-        """
-        sets in _objects the obj with key
-        <obj class name>.id
-        """
-        key = obj.__class__.__name__ + "." + getattr(obj, "id")
+        '''
+        Sets key for object
+        args:
+            @obj
+        '''
+        key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
-
+    
     def save(self):
-        """
-        serializes _objects to the JSON file
-        """
-        with open(FileStorage.__file_path, mode='w', encoding='UTF-8') as f:
-            my_obj = {}
-            for k, v in FileStorage.__objects.items():
-                my_obj[k] = v.to_dict()
-            my_str = json.dumps(my_obj)
-            f.write(my_str)
+        with open(self.__file_path, "w", encoding="utf-8") as file:
+            dict = {k: v.to_dict() for k, v in self.__objects.items()}
+            json.dump(dict, file)
+    
 
     def reload(self):
         """
