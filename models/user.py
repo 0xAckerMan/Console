@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 ''' creates a user from the basemodel'''
 
-from models import base_model
+from models.base_model import BaseModel
 
 
-class User(base_model):
+class User(BaseModel):
     '''Class implementation'''
 
     email = ''
