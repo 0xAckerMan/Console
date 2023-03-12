@@ -3,7 +3,19 @@
 A command-line interpreter
 Uses the cmd module
 '''
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
 import cmd
+import inspect
+from models.engine.file_storage import FileStorage
+from models.place import Place
+from models.review import Review
+from models import storage
+from models.state import State
+from models.user import User
+import re
+import sys
 
 
 class HBNBCommand(cmd.Cmd):
